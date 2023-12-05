@@ -3,7 +3,7 @@ PROJECT			=	T_PROJECT
 VERSION			=	T_VERSION
 BUILD_IMAGE	= ${PROJECT}-build:${VERSION}
 
-REPO				=	https://github.com/T_ORG/T_PROJECT.git
+REPO				=	https://github.com/Loongson-Cloud-Community/T_PROJECT.git
 
 all: ci
 
@@ -14,11 +14,14 @@ build: lib
 		.
 
 src/${PROJECT}:
-	git clone -b ${VERSION} --depth=1 ${REPO} src/${PROJECT}
+	git clone -b loongarch64-${VERSION} --depth=1 ${REPO} src/${PROJECT}
 
 ci: src/${PROJECT}
 	docker run --rm \
 		-v `pwd`:/build \
+		-v ${HOME}/.m2/repository:/root/.m2/repository:rw \
+		-e https_proxy=${https_proxy} \
+		-e http_proxy=${http_proxy} \
 		${BUILD_IMAGE} \
 		/bin/bash -c 'cd /build/src/'${PROJECT}'; /build/ci.sh'
 

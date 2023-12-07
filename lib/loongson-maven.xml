@@ -22,12 +22,26 @@
 		<releases><enabled>true</enabled></releases>
 		<snapshots><enabled>true</enabled></snapshots>
 	</repository>
+	<repository>
+		<id>aliyum</id>
+		<name>Aliyun Maven</name>
+		<url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+		<releases><enabled>true</enabled></releases>
+		<snapshots><enabled>true</enabled></snapshots>
+	</repository>
 	</repositories>
 	<pluginRepositories>
 	<pluginRepository>
 		<id>loongson</id>
 		<name>Loongson Maven</name>
 		<url>https://maven.loongnix.cn/loongarchabi1/maven/</url>
+		<releases><enabled>true</enabled></releases>
+		<snapshots><enabled>true</enabled></snapshots>
+	</pluginRepository>
+	<pluginRepository>
+		<id>aliyum</id>
+		<name>Aliyun Maven</name>
+		<url>https://maven.aliyun.com/nexus/content/groups/public/</url>
 		<releases><enabled>true</enabled></releases>
 		<snapshots><enabled>true</enabled></snapshots>
 	</pluginRepository>

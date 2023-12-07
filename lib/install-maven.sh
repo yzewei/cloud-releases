@@ -15,7 +15,7 @@ install_maven()
   curl -OL https://archive.apache.org/dist/maven/maven-${MAVEN_MAJOR_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
   tar -xf apache-maven*.gz && rm -rf *.gz
   mv apache-maven* maven
-  cp -Rf maven/* /usr/
+  cp -Rf maven/. /usr/
 
   popd
 }

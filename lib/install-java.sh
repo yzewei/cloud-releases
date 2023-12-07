@@ -17,7 +17,7 @@ install_java()
   curl -OL $DOWNLOAD_URL
   tar -xf loongson*.gz && rm -rf *.gz
   mv jdk* java
-  cp -Rf java/* /usr/
+  cp -Rf java/. /usr/
 
   popd
 }

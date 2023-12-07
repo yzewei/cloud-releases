@@ -7,7 +7,7 @@ REPO				=	https://github.com/Loongson-Cloud-Community/hudi.git
 
 all: ci
 
-build: lib
+env: lib
 	docker build \
 		-f Dockerfile.build \
 		-t ${BUILD_IMAGE} \

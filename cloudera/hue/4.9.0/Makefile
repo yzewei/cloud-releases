@@ -1,9 +1,9 @@
-ORG					= apache
-PROJECT			=	knox
-VERSION			=	1.4.0
+ORG					= cloudera
+PROJECT			=	hue
+VERSION			=	4.9.0
 BUILD_IMAGE	= ${PROJECT}-build:${VERSION}
 
-REPO				=	https://github.com/Loongson-Cloud-Community/knox.git
+REPO				=	https://github.com/Loongson-Cloud-Community/hue.git
 
 all: ci
 

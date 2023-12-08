@@ -29,4 +29,3 @@ ci: src/${PROJECT}
 lib:
 	rm -rf lib
 	cp -R ../../../lib lib
-	patch -R ./lib/loongson-maven.xml -p1 < loongson-maven.patch

@@ -1,0 +1,10 @@
+autoconf 
+automake 
+libtool 
+make
+unzip 
+libstdc++ 
+libstdc++-devel 
+gcc 
+gcc-c++
+wget

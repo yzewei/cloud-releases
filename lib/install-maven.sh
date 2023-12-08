@@ -8,6 +8,8 @@ DOWNLOAD_URL=
 MAVEN_MAJOR_VERSION=
 
 lib_path=$(cd $(dirname $0); pwd)
+
+INSTALL_DIR=/usr/local
 install_maven()
 {
   pushd /tmp
@@ -15,7 +17,7 @@ install_maven()
   curl -OL https://archive.apache.org/dist/maven/maven-${MAVEN_MAJOR_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
   tar -xf apache-maven*.gz && rm -rf *.gz
   mv apache-maven* maven
-  cp -Rf maven/. /usr/
+  cp -Rf maven/. $INSTALL_DIR
 
   popd
 }

@@ -10,6 +10,8 @@ JAVA17=http://ftp.loongnix.cn/Java/openjdk17/loongson17.7.0-fx-jdk17.0.8_7-linux
 
 DOWNLOAD_URL=
 JAVA_VERSION=
+
+INSTALL_DIR=/usr/local
 install_java()
 {
   pushd /tmp
@@ -17,7 +19,7 @@ install_java()
   curl -OL $DOWNLOAD_URL
   tar -xf loongson*.gz && rm -rf *.gz
   mv jdk* java
-  cp -Rf java/. /usr/
+  cp -Rf java/. $INSTALL_DIR
 
   popd
 }

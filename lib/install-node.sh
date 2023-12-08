@@ -4,6 +4,7 @@ set -o nounset
 set -o errexit
 
 NODE_VERSION=
+INSTALL_DIR=/usr/local
 
 NODE_VERSION_LIST=(
   10.24.1
@@ -25,7 +26,7 @@ install_node()
   curl -OL http://ftp.loongnix.cn/nodejs/LoongArch/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-loong64.tar.gz
   tar -xf node* && rm -rf *.gz
   mv node* node
-  cp -Rf node/. /usr/
+  cp -Rf node/. $INSTALL_DIR
   popd
 }
 

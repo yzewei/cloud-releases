@@ -9,7 +9,7 @@ LOCAL_REPO ?= ${HOME}/.m2/repository
 
 all: ci
 
-build: 
+env: 
 	docker build \
 		-f Dockerfile.build \
 		--build-arg http_proxy=${http_proxy} \

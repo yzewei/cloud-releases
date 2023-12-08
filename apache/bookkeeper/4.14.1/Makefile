@@ -7,7 +7,7 @@ REPO				=	https://github.com/apache/bookkeeper.git
 
 all: ci
 
-build: lib
+env: lib
 	docker build \
 		-f Dockerfile.build \
 		-t ${BUILD_IMAGE} \

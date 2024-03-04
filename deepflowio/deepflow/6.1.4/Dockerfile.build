@@ -1,0 +1,16 @@
+FROM lcr.loongnix.cn/library/debian:sid
+
+# install essential tools
+RUN apt-get update && apt install -y wget git make
+
+ADD lib lib
+
+# Install dependencies with lib
+RUN apt-get install -y clang gcc llvm llvm-dev libpcap-dev libelf-dev make rustc cargo && \
+	apt-get install -y bcc zlib1g-dev libdwarf-dev libelf-dev python3 libpython3.11-dev libpython3.11-stdlib pip python3-ujson 
+#	pip3 install ujson
+#RUN yum install llvm11 gcc  libpcap-devel glibc-static elfutils-libelf-devel make clang
+
+# Install golang
+RUN apt install -y curl && cd lib && ./install-golang.sh 19 && ./set-ftp.sh
+

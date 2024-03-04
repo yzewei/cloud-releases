@@ -1,0 +1,12 @@
+FROM lcr.loongnix.cn/library/debian:sid
+
+# install essential tools
+RUN apt-get update && apt install -y wget git make
+
+ADD lib lib
+
+# Install dependencies with lib
+
+# Install golang
+RUN apt install -y curl gcc && cd lib && ./install-golang.sh 19 && ./set-ftp.sh
+

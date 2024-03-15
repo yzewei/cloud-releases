@@ -1,0 +1,35 @@
+ORG					= distribution
+PROJECT			=	distribution
+VERSION			=	2.7.1
+BUILD_IMAGE	= ${PROJECT}-build:${VERSION}
+
+REPO				=	https://github.com/Loongson-Cloud-Community/distribution-distribution.git
+
+all: ci
+
+env: lib
+	docker build \
+                -f Dockerfile.build \
+                -t ${BUILD_IMAGE} \
+                .
+
+src/${PROJECT}: clean 
+	git clone -b loong64-v$(VERSION) --depth 1 $(REPO)
+
+ci: src/${PROJECT}
+	docker run --rm -v `pwd`:/build \
+		-e https_proxy=${https_proxy} \
+		-e http_proxy=${http_proxy} \
+		-e TAG=${ORG}/${PROJECT} \
+		-e VERSION=${VERSION} \
+		-e PROJECT=${PROJECT} \
+		-e ORG=${ORG} \
+		${BUILD_IMAGE} /bin/bash -c 'cd /build/'$(ORG)-$(PROJECT)'; /build/ci.sh'
+
+
+.PHONY: lib
+lib:
+	rm -rf lib
+	cp -R ../../../lib lib
+clean:
+	sudo rm -rf $(ORG)-$(PROJECT)

@@ -1,9 +1,9 @@
-ORG					= thanos-io
-PROJECT			=	thanos
-VERSION			=	0.18.0
+ORG					= flannel-io
+PROJECT			=	cni-plugin
+VERSION			=	1.0.1
 BUILD_IMAGE	= ${PROJECT}-build:${VERSION}
 
-REPO				=	https://github.com/thanos-io/thanos
+REPO				=	https://github.com/Loongson-Cloud-Community/flannel-io-cni-plugin.git
 
 all: ci
 
@@ -20,7 +20,11 @@ ci: src/${PROJECT}
 	docker run --rm -v `pwd`:/build \
 		-e https_proxy=${https_proxy} \
 		-e http_proxy=${http_proxy} \
-		${BUILD_IMAGE} /bin/bash -c 'cd /build/'$(PROJECT)'; /build/ci.sh'
+		-e TAG=${ORG}/${PROJECT} \
+		-e VERSION=${VERSION} \
+		-e PROJECT=${PROJECT} \
+		-e ORG=${ORG} \
+		${BUILD_IMAGE} /bin/bash -c 'cd /build/'$(ORG)-$(PROJECT)'; /build/ci.sh'
 
 
 .PHONY: lib
@@ -28,4 +32,4 @@ lib:
 	rm -rf lib
 	cp -R ../../../lib lib
 clean:
-	rm -rf $(PROJECT)
+	sudo rm -rf $(ORG)-$(PROJECT)

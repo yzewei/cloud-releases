@@ -18,7 +18,7 @@ src/${PROJECT}: clean
 
 ci: src/${PROJECT}
 	docker run --rm -v `pwd`:/build \
-		-e https_proxy=${https_proxt} \
+		-e https_proxy=${https_proxy} \
 		-e http_proxy=${http_proxy} \
 		${BUILD_IMAGE} /bin/bash -c 'cd /build/'$(PROJECT)'; /build/ci.sh'
 

@@ -22,6 +22,8 @@ ci: src/${PROJECT}
 		-v ${HOME}/.m2/repository:/root/.m2/repository:rw \
 		-e https_proxy=${https_proxy} \
 		-e http_proxy=${http_proxy} \
+		-e TAG=${ORG}/${PROJECT} \
+		-e VERSION=${VERSION}
 		${BUILD_IMAGE} \
 		/bin/bash -c 'cd /build/src/'${PROJECT}'; /build/ci.sh'
 

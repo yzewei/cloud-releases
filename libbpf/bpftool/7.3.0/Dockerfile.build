@@ -1,0 +1,15 @@
+FROM lcr.loongnix.cn/openanolis/anolisos:23.1
+
+# install essential tools
+ADD lib lib
+ADD update-yum-repo.sh update-yum-repo.sh
+RUN bash update-yum-repo.sh
+RUN yum update && yum install -y elfutils-libelf-devel elfutils-libelf \
+	glibc-devel elfutils-devel elfutils-libs elfutils \
+	zlib  zlib-devel zlib-static \
+	libcap libcap-devel libcap-static binutils-devel \
+	llvm llvm-devel llvm-libs llvm-static clang lld clang-libs clang-devel tar
+# Install dependencies with lib
+
+# Install golang
+

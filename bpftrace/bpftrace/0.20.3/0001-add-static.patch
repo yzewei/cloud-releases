@@ -1,0 +1,26 @@
+From 74c38a3b4c5761078ce62f406cf135e96df49473 Mon Sep 17 00:00:00 2001
+From: yzewei <yangzewei@loongson.cn>
+Date: Wed, 27 Mar 2024 10:31:55 +0800
+Subject: [PATCH] add-static
+
+Signed-off-by: yzewei <yangzewei@loongson.cn>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 472068f..38af49b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -11,7 +11,7 @@ set(bpftrace_VERSION_PATCH 3)
+ include(GNUInstallDirs)
+ 
+ set(WARNINGS_AS_ERRORS OFF CACHE BOOL "Build with -Werror")
+-set(STATIC_LINKING OFF CACHE BOOL "Build bpftrace as a statically linked executable")
++set(STATIC_LINKING ON CACHE BOOL "Build bpftrace as a statically linked executable")
+ 
+ set(BUILD_ASAN OFF CACHE BOOL "Build bpftrace with -fsanitize=address")
+ set(ENABLE_MAN ON CACHE BOOL "Build man pages")
+-- 
+2.41.0
+

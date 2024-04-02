@@ -1,6 +1,6 @@
 ORG					= Yelp
 PROJECT			=	dumb-init
-VERSION			=	v1.2.2
+VERSION			=	1.2.2
 BUILD_IMAGE	= ${PROJECT}-build:${VERSION}
 
 REPO				=	https://github.com/Loongson-Cloud-Community/dumb-init.git
@@ -13,7 +13,7 @@ env:
 		-t ${BUILD_IMAGE} \
 		.
 
-ci: 
+ci: lib 
 	docker run --rm \
 		-v `pwd`:/build \
 		-v ${HOME}/.m2/repository:/root/.m2/repository:rw \

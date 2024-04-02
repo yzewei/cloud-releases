@@ -3,6 +3,7 @@
 set -o errexit
 set -o nounset
 
+bash lib/set-ftp.sh
 go env -w GOPROXY=https://goproxy.cn,direct
 
 
@@ -34,6 +35,15 @@ go mod vendor
 
 make runner-bin-host && make helper-bin-host
 
-mkdir ../dist
-cp -r out/* ../dist/
+mkdir dist
+cp -r out/* dist/
 
+cd /build/gitlab-runner/dist/binaries/ && \
+		tar zcvf gitlab-runner-linux-loong64.tar.gz gitlab-runner-linux-loong64 && \
+                bash /build/lib/curl.sh gitlab-runner-linux-loong64.tar.gz gitlab-org/gitlab-runner 13.11.0 && \
+		bash /build/lib/curl.sh gitlab-runner-linux-loong64.tar.gz gitlabhq/gitlab-runner 13.11.0
+cd /build/gitlab-runner/dist/binaries/gitlab-runner-helper && \
+	mv gitlab-runner-helper.loongarch64 gitlab-runner-helper-linux-loong64  && \
+	tar zcvf gitlab-runner-helper-linux-loong64.tar.gz gitlab-runner-helper-linux-loong64&& \
+        bash /build/lib/curl.sh gitlab-runner-helper-linux-loong64.tar.gz gitlab-org/gitlab-runner-helper 13.11.0 && \
+	bash /build/lib/curl.sh gitlab-runner-helper-linux-loong64.tar.gz gitlabhq/gitlab-runner-helper 13.11.0

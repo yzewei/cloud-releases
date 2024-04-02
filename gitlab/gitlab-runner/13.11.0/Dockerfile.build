@@ -1,4 +1,4 @@
-FROM cr.loongnix.cn/library/golang:1.20-buster
+FROM lcr.loongnix.cn/library/golang:1.21-buster
 
 # install essential tools
 RUN apt update -y && \

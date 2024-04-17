@@ -1,0 +1,44 @@
+From 91383f0129a2c95e0708ddfccd7abbf05d909cf9 Mon Sep 17 00:00:00 2001
+From: yzewei <yangzewei@loongson.cn>
+Date: Thu, 21 Mar 2024 15:38:45 +0800
+Subject: [PATCH] add loong64 support
+
+Signed-off-by: yzewei <yangzewei@loongson.cn>
+---
+ pkg/system/dup.go               |  1 +
+ pkg/system/dup_linux_loong64.go | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
+ create mode 100644 pkg/system/dup_linux_loong64.go
+
+diff --git a/pkg/system/dup.go b/pkg/system/dup.go
+index 4fee401..8270f05 100644
+--- a/pkg/system/dup.go
++++ b/pkg/system/dup.go
+@@ -5,6 +5,7 @@
+ // +build !windows
+ // +build !linux !arm64
+ // +build !linux !riscv64
++// +build !linux !loong64
+ 
+ package system
+ 
+diff --git a/pkg/system/dup_linux_loong64.go b/pkg/system/dup_linux_loong64.go
+new file mode 100644
+index 0000000..bda47e8
+--- /dev/null
++++ b/pkg/system/dup_linux_loong64.go
+@@ -0,0 +1,11 @@
++// Copyright 2019-2022 Graham Clark. All rights reserved.  Use of this source
++// code is governed by the MIT license that can be found in the LICENSE
++// file.
++
++package system
++
++import "syscall"
++
++func Dup2(fd int, fd2 int) error {
++	return syscall.Dup3(fd, fd2, 0)
++}
+-- 
+2.41.0
+

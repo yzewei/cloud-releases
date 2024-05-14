@@ -1,0 +1,9 @@
+FROM lcr.loongnix.cn/library/debian:sid
+LABEL maintainer="yangzewei@loongson.cn"
+
+ADD ./* ./
+RUN apt update && apt install -y curl
+RUN bash install-golang.sh 18
+ENV PATH=/usr/local/golang/bin:$PATH
+
+CMD go version

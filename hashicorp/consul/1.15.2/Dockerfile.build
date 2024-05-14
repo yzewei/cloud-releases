@@ -1,0 +1,12 @@
+FROM lcr.loongnix.cn/library/debian:sid
+
+# install essential tools
+RUN apt-get update && apt install -y wget git make
+#RUN apk add --update --no-cache wget git make
+ADD lib lib
+
+# Install dependencies with lib
+
+# Install golang
+#RUN apk add --update --no-cache curl build-base
+RUN apt install -y build-essential libc-dev libstdc++-13-dev pkg-config curl && cd lib && ./install-golang.sh 20

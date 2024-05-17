@@ -1,0 +1,17 @@
+FROM lcr.loongnix.cn/openanolis/anolisos:23.1
+
+# install essential tools
+ADD lib lib
+RUN bash lib/update-yum-repo.sh
+RUN yum update && yum install -y  asciidoctor   git\
+	bison  binutils-devel bcc-devel python3-bcc.noarch cereal-devel \
+	clang-devel   cmake    elfutils-devel   elfutils-libelf-devel  elfutils-libs    \
+	flex         gcc         gcc-c++         libpcap-devel         libbpf-devel    \
+	llvm-devel         make         systemtap-sdt-devel   zlib zlib-static      zlib-devel 
+RUN yum install -y vim vim-common dwarves
+
+CMD ["/bin/bash"]
+# Install dependencies with lib
+
+# Install golang
+

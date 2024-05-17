@@ -1,0 +1,34 @@
+From a6c1f8c10b5b6771f702407de18d5081dff721a8 Mon Sep 17 00:00:00 2001
+From: yzewei <yangzewei@loongson.cn>
+Date: Fri, 17 May 2024 11:14:55 +0800
+Subject: [PATCH] update
+
+Signed-off-by: yzewei <yangzewei@loongson.cn>
+---
+ Dockerfile | 2 +-
+ start.sh   | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Dockerfile b/Dockerfile
+index f27f630..05b7f96 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -1,4 +1,4 @@
+-FROM golang:1.18-buster
++FROM lcr.loongnix.cn/library/golang:1.19-sid
+ 
+ ARG GOSU_VERSION=1.17
+ 
+diff --git a/start.sh b/start.sh
+index a94c570..1e76751 100644
+--- a/start.sh
++++ b/start.sh
+@@ -1,3 +1,3 @@
+-docker build -t gosu-loongarch64 .
+-docker run --rm -v "$(pwd)"/dist:/dist gosu-loongarch64
++docker build -t gosu-loong64 -f Dockerfile .
++docker run --rm -v "$(pwd)"/dist:/dist gosu-loong64
+ ls -al "$(pwd)"/dist
+-- 
+2.41.0
+

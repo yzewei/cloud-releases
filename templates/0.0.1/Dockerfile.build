@@ -10,6 +10,9 @@ ADD lib lib
 ## RUN ./lib/install-java.sh 8
 ## 
 ## RUN ./lib/install-maven.sh 3.6.3
+##
+## RUN ./lib/install-golang.sh 20
 
 # Install packages
 ## RUN yum install -y xxx
+

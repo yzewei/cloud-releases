@@ -2,7 +2,6 @@ name: check && build
 on:
   push:
   pull_request:
-  workflow_dispatch:
 
 jobs:
   Explore-Gitea-Actions:
@@ -71,6 +70,10 @@ jobs:
           set -euo pipefail
           PWD=$PWD
           for BIN in $AFFECTED_BINS; do
+            if [[ "$BIN" =~ ^(\.gitea|\.git|lib|scripts) ]]; then
+              echo "Skipping this build because of path is hidden."
+              continue
+            fi
             echo "Building ${BIN}..."
             (
               cd "$BIN" || exit 1

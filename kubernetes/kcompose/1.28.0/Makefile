@@ -30,3 +30,6 @@ ci: src/${PROJECT}
 lib:
 	rm -rf lib
 	cp -R ../../../lib lib
+
+clean:
+	rm -rf lib src

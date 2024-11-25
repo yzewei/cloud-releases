@@ -1,0 +1,53 @@
+name: Build Affected Binaries
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  Explore-Gitea-Actions:
+    name: Build Affected Binaries
+    runs-on: alpine-3.19
+    defaults:
+      run:
+        shell: sh # 明确指定使用 sh
+    steps:
+      # Step 1: 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: 获取变动的文件
+      - name: Get changed files
+        run: |
+          # 获取变动的文件列表
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          cat changed_files.txt
+
+      # Step 3: 确定哪些二进制项目有变动
+      - name: Identify affected binaries
+        run: |
+          ROOT_DIR=$(git rev-parse --show-toplevel)
+          AFFECTED_BINS=()
+
+          # 解析所有的子项目
+          for DIR in $(find $ROOT_DIR/cloud-release/*/*/* -type d); do
+            if grep -q "^$DIR" changed_files.txt; then
+              AFFECTED_BINS+=($(basename $(dirname $DIR)))
+            fi
+          done
+
+          # 输出变动的项目
+          echo "Affected binaries: ${AFFECTED_BINS[@]}"
+          echo "AFFECTED_BINS=${AFFECTED_BINS[@]}" >> $GITHUB_ENV
+
+      # Step 4: 针对每个变动的项目执行构建
+      - name: Build affected binaries
+        run: |
+          for BIN in ${{ env.AFFECTED_BINS }}; do
+            echo "Building ${BIN}..."
+            # 进入对应的项目目录并执行构建命令
+            cd $ROOT_DIR/cloud-release/$BIN
+            make env && make ci && make clean
+            cd $ROOT_DIR
+          done
+

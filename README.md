@@ -28,7 +28,7 @@ make ci
 ```
 
 ## 通用工具包 lib
-用于 Dcokerfile.build 的实用脚本，可以安装 java，maven 等。
+用于 Dcokerfile.build 的实用脚本，可以安装 java，maven，golang(abi1.0 abi2.0) 等。
 
 ## 避免 jar 包重复下载耗时
 

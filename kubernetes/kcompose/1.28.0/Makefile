@@ -7,7 +7,7 @@ REPO				=	https://github.com/kubernetes/kcompose
 
 all: ci
 
-env: lib
+env:
 	docker build \
 		-f Dockerfile.build \
 		-t ${BUILD_IMAGE} \
@@ -26,7 +26,6 @@ ci: src/${PROJECT}
 		${BUILD_IMAGE} \
 		/bin/bash -c 'cd /build/src/'${PROJECT}'; /build/ci.sh'
 
-.PHONY: lib
-lib:
-	rm -rf lib
-	cp -R ../../../lib lib
+
+clean:
+	rm -rf src

@@ -28,7 +28,7 @@ install_golang()
 {
   pushd /tmp
 
-  curl -OL $DOWNLOAD_URL
+  curl -OL --retry 5 --retry-delay 10 $DOWNLOAD_URL
   tar -xf go*.gz && rm -rf *.gz
   mv go* golang
   cp -Rf golang/. $INSTALL_DIR

@@ -1,0 +1,82 @@
+name: check && build
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  Explore-Gitea-Actions:
+    name: Build Affected Binaries
+    runs-on: host
+    defaults:
+      run:
+        shell: sh
+    steps:
+      # Step 1: 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 拉取完整的历史记录
+
+      # Step 2: 设置提交范围
+      - name: Set commit range
+        run: |
+          if [ "$(git rev-list --count HEAD)" -eq 1 ]; then
+            BEFORE_COMMIT=$(git rev-list --max-parents=0 HEAD) # 获取第一个提交
+          elif git rev-parse HEAD~1 >/dev/null 2>&1; then
+            BEFORE_COMMIT=$(git rev-parse HEAD~1)
+          else
+            BEFORE_COMMIT=$(git rev-parse HEAD)
+          fi
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          
+          PARENT_COMMIT=$(git rev-parse HEAD~1)
+          echo "BEFORE_COMMIT=$BEFORE_COMMIT"
+          echo "CURRENT_COMMIT=$CURRENT_COMMIT"
+          echo "BEFORE_COMMIT=$BEFORE_COMMIT" >> $GITHUB_ENV
+          echo "CURRENT_COMMIT=$CURRENT_COMMIT" >> $GITHUB_ENV
+
+      # Step 3: 获取变动的文件
+      - name: Get changed files
+        run: |
+          git diff --name-only "$BEFORE_COMMIT" "$CURRENT_COMMIT" > changed_files.txt
+          echo "Changed files:"
+          cat changed_files.txt
+
+      # Step 4: 确定受影响的二进制项目
+      - name: Identify affected binaries
+        run: |
+          AFFECTED_BINS=""
+  
+          # Step 1: 从改动文件提取目录
+          DIRS=$(cat changed_files.txt | xargs -n1 dirname | sort -u)
+          echo "$DIRS"
+          # Step 2: 遍历这些目录，找出受影响的二进制项目
+          for DIR in $DIRS; do
+            ABS_DIR="$ROOT_DIR/$DIR"
+            echo "$PWD"
+            # 测试目前在哪
+            if [ -d "$DIR" ]; then
+              echo "success"
+              AFFECTED_BINS="$AFFECTED_BINS $DIR"
+            fi
+          done
+     
+          echo "Affected binaries: $AFFECTED_BINS"
+          echo "AFFECTED_BINS=$AFFECTED_BINS" >> $GITHUB_ENV
+
+      # Step 5: 构建受影响的二进制项目
+      - name: Build affected binaries
+        run: |
+          set -euo pipefail
+          PWD=$PWD
+          for BIN in $AFFECTED_BINS; do
+            echo "Building ${BIN}..."
+            (
+              cd "$BIN" || exit 1
+              #make env && make ci && make clean
+              make env && make ci && make clean
+            ) || { echo "Error: Build failed for $BIN"; exit 1; }
+            cd "$PWD" || exit 1
+          done
+

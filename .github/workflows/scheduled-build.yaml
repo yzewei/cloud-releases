@@ -1,0 +1,90 @@
+name: Scheduled Build
+
+# 定时触发（每天 UTC 时间 00:00 检查是否满足 10 天间隔条件）
+on:
+  schedule:
+    - cron: "50 17 * * *" # 每天运行
+  workflow_dispatch:
+
+jobs:
+  Scheduled-Build:
+    name: Build All Subprojects
+    runs-on: self-hosted
+    defaults:
+      run:
+        shell: bash
+    steps:
+      # Step 1: 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 拉取完整历史
+
+      # Step 2: 检查是否到达 10 天的间隔
+      - name: Check if 10-day interval passed
+        id: check_interval
+        run: |
+          # 获取上次成功执行的时间
+          LAST_RUN_FILE=".github/last_successful_build"
+          CURRENT_TIME=$(date +%s)
+
+          if [ -f "$LAST_RUN_FILE" ]; then
+            LAST_RUN_TIME=$(cat "$LAST_RUN_FILE")
+          else
+            LAST_RUN_TIME=0
+          fi
+
+          TIME_DIFF=$((CURRENT_TIME - LAST_RUN_TIME))
+          TEN_DAYS=$((10 * 24 * 60 * 60))
+
+          if [ "$TIME_DIFF" -ge "$TEN_DAYS" ]; then
+            echo "It's been more than 10 days since the last successful run."
+            echo "SHOULD_RUN=true" >> $GITHUB_ENV
+          else
+            echo "It's been less than 10 days since the last successful run."
+            echo "SHOULD_RUN=false" >> $GITHUB_ENV
+
+      # Step 3: 跳过构建（如果不满足条件）
+      - name: Skip if not time
+        if: env.SHOULD_RUN == 'false'
+        run: |
+          echo "Skipping build as it's not yet 10 days since the last run."
+          exit 0
+
+      # Step 4: 遍历所有子项目并执行构建
+      - name: Build all subprojects
+        run: |
+          set -euo pipefail
+          ROOT_DIR=$(pwd)
+          echo "Building all subprojects in $ROOT_DIR"
+
+          # 遍历所有 cloud 下的子项目目录，目录格式为 cloud/<org>/<pro>/<version>
+          find cloud-releases -mindepth 3 -maxdepth 3 -type d | while read -r DIR; do
+            # 检查目录中是否存在 Makefile
+            if [ -f "$DIR/Makefile" ]; then
+              if echo "$BIN" | grep -qE '(lib|templates)' || echo "$BIN" | grep -qE '(\.gitea|\.git|scripts)'; then
+                echo "Skipping $BIN because it matches exclusion rules."
+                continue
+              fi
+              echo "Building $DIR..."
+              (
+                cd "$DIR" || exit 1
+                make env && make ci && make clean
+              ) || { echo "Error: Build failed for $DIR"; exit 1; }
+            else
+              echo "Skipping $DIR: Makefile not found."
+            fi
+          done
+
+      # Step 5: 更新上次成功执行的时间
+      - name: Update last successful run timestamp
+        if: success()
+        run: |
+          echo "Updating last successful run timestamp."
+          echo "$(date +%s)" > .github/last_successful_build
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/last_successful_build
+          git commit -m "Update last successful build timestamp"
+          git push
+

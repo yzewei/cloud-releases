@@ -1,0 +1,10 @@
+FROM lcr.loongnix.cn/library/alpine:3.19
+
+# install essential tools
+RUN apk add curl bash rsync
+ADD lib lib
+
+# Install dependencies with lib
+
+# Install golang
+RUN cd lib && ./install-golang.sh 22

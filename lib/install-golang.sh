@@ -64,8 +64,10 @@ install_golang() {
     curl -OL --retry 5 --retry-delay 10 "$DOWNLOAD_URL"
     tar -xf go*.gz && rm -rf *.gz
     mv go* golang
-    cp -Rf golang/. "$INSTALL_DIR"
-
+    cp -r golang "$INSTALL_DIR"
+    rm -rf golang
+    echo 'export PATH=$PATH:/usr/local/golang/bin' >> ~/.bashrc
+    source ~/.bashrc
     popd
 }
 

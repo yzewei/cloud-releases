@@ -5,7 +5,6 @@ set -o nounset
 
 bash /lib/set-ftp.sh
 
-	export https_proxy="http://10.130.0.20:7890"
 
 echo "start build--------------------------------"
 	cd /build/libbpf && cd src && make install_uapi_headers

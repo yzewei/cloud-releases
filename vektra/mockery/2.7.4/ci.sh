@@ -9,7 +9,6 @@ echo "set go env"
 	go env -w GOFLAGS="-buildvcs=false"
 	go env GOPATH="/go"
 #	export GOPROXY=https://goproxy.cn
-	export https_proxy="http://10.130.0.20:7890"
 
 echo "start build--------------------------------"
 	cd /build/$PROJECT && \

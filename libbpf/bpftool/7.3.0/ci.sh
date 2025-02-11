@@ -3,9 +3,7 @@
 set -o errexit
 set -o nounset
 
-bash /lib/set-ftp.sh
 
-	export https_proxy="http://10.130.0.20:7890"
 
 echo "start build--------------------------------"
 		cd /build/$PROJECT/src && \
